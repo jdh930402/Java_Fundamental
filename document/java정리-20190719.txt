@@ -1,0 +1,120 @@
+﻿식별자 (identifier)
+- 클래스, 패키지, 변수, 메서드
+- 규칙 : 첫글자는 문자만 사용 가능(영문 _ $)
+          예약어는 사용할 수 없음
+          대소문자 구분, 공백 사용할 수 없음
+
+- 관례 : 클래스명의 첫 글자는 대문자, 그 외의 식별자는 소문자
+          두 단어가 합쳐지면 각 단어의 첫글자는 대문자 (camel case)
+          상수는 대문자
+
+자료형 (Data type)
+- 기본 자료형(primitive data type)
+	byte (-128 ~ 127) => 아이피주소
+2byte	short (-32,xxx ~ 32,xxx) => 포트범위, 유니코드
+4byte	int (-21억 ~ 21억) => 도메인
+8byte	long (많다)
+4byte	float (int보다 작다)
+8byte	double (long보다 작다)
+2byte	char
+	boolean
+
+- 참조 자료형(reference data type)
+	array
+	class
+	interface
+	
+
+리터럴(Literal)
+정수 자료형 : byte/ short/ int/ long => 10진수/ 2진수(0b)/ 8진수(0)/ 16진수(0x)  
+
+실수 자료형 : float/ double => f/ d(생략가능)
+문자 자료형 : char => 문자(' '), 유니코드('\u0000' ~ '\uffff'), 아스키코드(65, 97) 
+논리 자료형 : boolean => true, false
+
+형변환(casting)
+- (자료형) operand
+	circuit : 범위를 넘을때 발생( 자료형을 바꾸는게 좋음 )
+	cut : 실수형 -> 정수형
+
+연산자(operator)
+증감 연산자 : ++, --
+산술 연산자 : +, -, *, /, %
+비교 연산자 : ==, >=, ...
+복합 연산자 : +=, -=, ...
+논리 연산자 : &&(앞에가 false일 경우, short circuit이 발생), ||(앞에가 true일 경우, short circuit이 발생)
+
+
+* == : primitive일 때는 값 비교 reference일 때는 주소 비교
+
+우선순위(operator priority)
+- (), *, /, +, -, &&, ||
+- + (더하기 연산자, 연결 연산자) => 모두 숫자일 경우에만 더하기 연산
+
+제어문(control statement)
+- if statement
+	if(조건) 실행문;
+	if(조건){실행문;}else{실행문;}
+	if(조건){실행문;}else if{실행문;}else{실행문;}
+
+- switch case statement => reference 자료형을 비교 불가
+	switch(수식){ // 수식에 올 수 있는 자료형은 byte, short ,int, char, String
+		case 1: 실행문; break;
+		case 2: 실행문; break;
+		default: 실행문;
+	         }
+break : 사용할 수도 있고 안할 수도 있다. (실행문이 없는 경우, 사용X)
+
+- for loop statement
+	for(초기값 ; 조건 ; 증감){
+		실행문;
+	}
+
+- while loop statement
+	whilte(조건){
+		실행문;
+	}
+
+- break statement
+	switch -case문을 빠져나갈 때
+	반복문을 빠져나갈 때
+	break lable은 inner 반복문에서 outter반복문을 빠져 나갈 때 사용
+	
+	ji : for(조건문1){
+		for(조건문2){
+			if(조건){
+				break ji;
+			}
+		}
+	}
+
+- continue statement
+	반복문의 마지막으로 이동할 때
+	continue lable은 inner 반복문에서 outter반복문의 끝으로 이동할 때 사용
+
+	ji : while(조건문1){
+		while(조건문2){
+			if(조건){
+				continue ji;
+			}
+		}
+	}
+
+- return statement
+수행을 중지하고 호출한 곳으로 제어권을 넘겨줌
+
+배열(Array)
+- 생성
+	int[] a = new int [4];
+	int[] a = {1,2,3,,4};
+- 할당
+	a[0] = 1;
+	a[1] = 2; ....
+
+- 출력
+	for(int i = 0; i<a.length ; i++){
+		System.out.println(a[i]);
+	}
+
+*길이 : 배열 => length
+         문자열 => length()
