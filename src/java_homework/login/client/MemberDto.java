@@ -1,12 +1,7 @@
 package java_homework.login.client;
 
-import java.io.Serializable;
+public class MemberDto {
 
-public class MemberDto implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String name;
 	private String id;
 	private String pwd;

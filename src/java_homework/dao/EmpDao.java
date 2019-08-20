@@ -29,7 +29,7 @@ public class EmpDao {
 		return single;
 	}
 
-	private boolean insert(EmpDto e) {
+	public boolean insert(EmpDto e) {
 		boolean isSuccess = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -37,46 +37,54 @@ public class EmpDao {
 		try {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO emp(컬럼명) ");
-			sql.append("VALUES(?, ?, ?) ");
+			sql.append("INSERT INTO emp(empno, ename, job, mgr, hiredate, sal, comm, deptno) ");
+			sql.append("VALUES(?, ?, ?, ?, ?, ?, ? ,?) ");
 			pstmt = con.prepareStatement(sql.toString());
+
+			pstmt.setInt(++index, e.getEmpno());
+			pstmt.setString(++index, e.getEname());
+			pstmt.setString(++index, e.getJob());
+			pstmt.setInt(++index, e.getMgr());
+			pstmt.setString(++index, e.getDate());
+			pstmt.setInt(++index, e.getSal());
+			pstmt.setInt(++index, e.getComm());
+			pstmt.setInt(++index, e.getDeptno());
 			
-			pstmt.setString(++index, x);
-			pstmt.setString(++index, x);
-			pstmt.setString(++index, x);
 			pstmt.executeUpdate();
 			isSuccess = true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return isSuccess;
-	}
-	
-	private boolean update(EmpDto e) {
-		boolean isSuccess = false;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		int index = 0; 
-		try {
-			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
-			StringBuffer sql = new StringBuffer();
-			sql.append("UPDATE emp ");
-			sql.append("SET 속성명 = ? ");
-			sql.append("WHERE 조건 ");
-			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(++index, x);
-			pstmt.executeUpdate();
-			isSuccess = true;
-			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		return isSuccess;		
+		return isSuccess;
 	}
-	
-	private void delete(EmpDto e) {
+
+	public boolean update(EmpDto e) {
+		boolean isSuccess = false;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int index = 0;
+		try {
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
+			StringBuffer sql = new StringBuffer();
+			sql.append("UPDATE emp ");
+			sql.append("SET sal = ? ");
+			sql.append("WHERE empno = ? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(++index, e.getSal());
+			pstmt.setInt(++index , e.getEmpno());
+			pstmt.executeUpdate();
+			isSuccess = true;
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return isSuccess;
+	}
+
+	public boolean delete(EmpDto e) {
+		boolean isSuccess = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int index = 0;
@@ -84,38 +92,47 @@ public class EmpDao {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
 			sql.append("DELETE FROM emp ");
-			sql.append("WHERE 조건 ");
+			sql.append("WHERE empno = ? ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(++index, x);
+			pstmt.setInt(++index, e.getEmpno());
 			pstmt.executeUpdate();
+			isSuccess = true;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		return isSuccess;
 	}
-	
-	private ArrayList<EmpDto> select(){
+
+	public ArrayList<EmpDto> select() {
 		ArrayList<EmpDto> list = new ArrayList<EmpDto>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT 컬럼명 ");
+			sql.append("SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno ");
 			sql.append("FROM emp ");
 			sql.append("ORDER BY ASC ");
 			pstmt = con.prepareStatement(sql.toString());
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				int index = 0;
-				타입 변수 = rs.getString(++index);
-				타입 변수 = rs.getString(++index);
-				list.add(new EmpDto( ) );
+				int no = rs.getInt(++index);
+				String name = rs.getString(++index);
+				String job = rs.getString(++index);
+				int mgr = rs.getInt(++index);
+				String date = rs.getString(++index);
+				int sal = rs.getInt(++index);
+				int comm = rs.getInt(++index);
+				int deptno = rs.getInt(++index);
+								
+				list.add(new EmpDto( no, name, job, mgr, date, sal, comm, deptno));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return list;
 	}
 }

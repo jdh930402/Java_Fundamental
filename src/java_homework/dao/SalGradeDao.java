@@ -22,14 +22,14 @@ public class SalGradeDao {
 
 		}
 
-		public SalGradeDao getInstance() {
+		public static SalGradeDao getInstance() {
 			if (single == null) {
 				single = new SalGradeDao();
 			}
 			return single;
 		}
 		
-		private boolean insert(SalGradeDao s) {
+		public boolean insert(SalGradeDto s) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			boolean isSuccess = false;
@@ -38,12 +38,13 @@ public class SalGradeDao {
 			try {
 				con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 				StringBuffer sql = new StringBuffer();
-				sql.append("INSERT INTO salgrade(컬럼명...) ");
+				sql.append("INSERT INTO salgrade(grade, losal, hisal) ");
 				sql.append("VALUES(?, ?, ?) ");
 				pstmt = con.prepareStatement(sql.toString());
-				pstmt.setString(++index, x);
-				pstmt.setString(++index, x);
-				pstmt.setString(++index, x);
+				pstmt.setInt(++index, s.getGrade());
+				pstmt.setInt(++index, s.getLosal());
+				pstmt.setInt(++index, s.getHisal());
+				
 				pstmt.executeUpdate();
 				isSuccess = true;
 			} catch (SQLException e) {
@@ -53,7 +54,7 @@ public class SalGradeDao {
 			return isSuccess;
 		}
 
-		private boolean update(SalGradeDao s) {
+		public boolean update(SalGradeDto s) {
 			boolean isSuccess = false;
 			Connection con = null;
 			PreparedStatement pstmt = null;
@@ -62,10 +63,12 @@ public class SalGradeDao {
 				con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 				StringBuffer sql = new StringBuffer();
 				sql.append("UPDATE salgrade ");
-				sql.append("SET 컬럼명 = 변경값 ");
-				sql.append("WHERE 조건 ");
+				sql.append("SET losal = ?, hisal = ? ");
+				sql.append("WHERE grade = ? ");
 				pstmt = con.prepareStatement(sql.toString());
-				pstmt.setString(++index, x);
+				pstmt.setInt(++index, s.getLosal());
+				pstmt.setInt(++index , s.getHisal());
+				pstmt.setInt(++index, s.getGrade());
 				pstmt.executeUpdate();
 				isSuccess = true;
 			} catch (SQLException e) {
@@ -75,7 +78,7 @@ public class SalGradeDao {
 			return isSuccess;
 		}
 
-		private boolean delete(SalGradeDao s) {
+		public boolean delete(SalGradeDto s) {
 			boolean isSuccess = false;
 			Connection con = null;
 			PreparedStatement pstmt = null;
@@ -84,9 +87,9 @@ public class SalGradeDao {
 				con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 				StringBuffer sql = new StringBuffer();
 				sql.append("DELETE FROM salgrade ");
-				sql.append("WHERE 조건 ");
+				sql.append("WHERE grade = ? ");
 				pstmt = con.prepareStatement(sql.toString());
-				pstmt.setString(++index, x);
+				pstmt.setInt(++index, s.getGrade());
 				pstmt.executeUpdate();
 				isSuccess = true;
 				
@@ -97,26 +100,30 @@ public class SalGradeDao {
 			return isSuccess;
 		}
 		
-		private ArrayList<BonusDto> select(){
+		public ArrayList<SalGradeDto> select(){
 			ArrayList<SalGradeDto> list = new ArrayList<SalGradeDto>();
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			try {
 				con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 				StringBuffer sql = new StringBuffer();
-				sql.append("SELECT 컬럼명 ");
+				sql.append("SELECT grade, losal, hisal ");
 				sql.append("FROM salgrade ");
 				pstmt = con.prepareStatement(sql.toString());
 				ResultSet rs = pstmt.executeQuery();
 				while(rs.next()) {
 					int index = 0;
-					타입 변수 = rs.getString(++index);
-					list.add(new SalGradeDto());
+					int grade = rs.getInt(++index);
+					int losal = rs.getInt(++index);
+					int hisal = rs.getInt(++index);
+					
+					list.add(new SalGradeDto(grade, losal, hisal));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+			return list;
 		}
 
 

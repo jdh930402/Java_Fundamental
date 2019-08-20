@@ -39,7 +39,7 @@ public class MemberDao {
 		try {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?user=kic12&password=kic12");
 			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO member(id, pwd, mname) ");
+			sql.append("INSERT INTO member(id, pwd, name) ");
 			sql.append("VALUES(?, PASSWORD(?), ? )");
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(++index, d.getId());
@@ -74,7 +74,7 @@ public class MemberDao {
 			StringBuffer sql = new StringBuffer();
 			sql.append("UPDATE member ");
 			sql.append("SET pwd = PASSWORD(?) ");
-			sql.append("WHERE id = ? AND mname = ? ");
+			sql.append("WHERE id = ? AND name = ? ");
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(++index, m.getPwd());
 			pstmt.setString(++index, m.getId());
@@ -97,7 +97,7 @@ public class MemberDao {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?user=kic12&password=kic12");
 			StringBuffer sql = new StringBuffer();
 			sql.append("DELETE FROM member ");
-			sql.append("WHERE mname = ? AND id = ? AND pwd = PASSWORD(?) ");
+			sql.append("WHERE name = ? AND id = ? AND pwd = PASSWORD(?) ");
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(++index, m.getName());
 			pstmt.setString(++index, m.getId());

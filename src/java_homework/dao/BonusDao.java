@@ -22,14 +22,14 @@ public class BonusDao {
 
 	}
 
-	public BonusDao getInstance() {
+	public static BonusDao getInstance() {
 		if (single == null) {
 			single = new BonusDao();
 		}
 		return single;
 	}
 
-	private boolean insert(BonusDto b) {
+	public boolean insert(BonusDto b) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		boolean isSuccess = false;
@@ -38,12 +38,13 @@ public class BonusDao {
 		try {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO bonus(컬럼명...) ");
-			sql.append("VALUES(?, ?, ?) ");
+			sql.append("INSERT INTO bonus(ename, job, sal, comm) ");
+			sql.append("VALUES(?, ?, ?, ?) ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(++index, x);
-			pstmt.setString(++index, x);
-			pstmt.setString(++index, x);
+			pstmt.setString(++index, b.getName());
+			pstmt.setString(++index, b.getJob());
+			pstmt.setInt(++index, b.getSal());
+			pstmt.setInt(++index, b.getComm());
 			pstmt.executeUpdate();
 			isSuccess = true;
 		} catch (SQLException e) {
@@ -53,7 +54,7 @@ public class BonusDao {
 		return isSuccess;
 	}
 
-	private boolean update(BonusDto b) {
+	public boolean update(BonusDto b) {
 		boolean isSuccess = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -62,10 +63,11 @@ public class BonusDao {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
 			sql.append("UPDATE bonus ");
-			sql.append("SET 컬럼명 = 변경값 ");
-			sql.append("WHERE 조건 ");
+			sql.append("SET job = ? ");
+			sql.append("WHERE ename = ? ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(++index, x);
+			pstmt.setString(++index, b.getJob());
+			pstmt.setString(++index, b.getName());
 			pstmt.executeUpdate();
 			isSuccess = true;
 		} catch (SQLException e) {
@@ -75,7 +77,7 @@ public class BonusDao {
 		return isSuccess;
 	}
 
-	private boolean delete(BonusDto b) {
+	public boolean delete(BonusDto b) {
 		boolean isSuccess = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -84,20 +86,20 @@ public class BonusDao {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/kic?autoReconnect=true", "kic12", "kic12");
 			StringBuffer sql = new StringBuffer();
 			sql.append("DELETE FROM bonus ");
-			sql.append("WHERE 조건 ");
+			sql.append("WHERE ename = ? ");
 			pstmt = con.prepareStatement(sql.toString());
-			pstmt.setString(++index, x);
+			pstmt.setString(++index, b.getName());
 			pstmt.executeUpdate();
 			isSuccess = true;
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return isSuccess;
 	}
-	
-	private ArrayList<BonusDto> select(){
+
+	public ArrayList<BonusDto> select() {
 		ArrayList<BonusDto> list = new ArrayList<BonusDto>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -108,14 +110,18 @@ public class BonusDao {
 			sql.append("FROM bonus ");
 			pstmt = con.prepareStatement(sql.toString());
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				int index = 0;
-				타입 변수 = rs.getString(++index);
-				list.add(new BonusDto());
+				String name = rs.getString(++index);
+				String job = rs.getString(++index);
+				int sal = rs.getInt(++index);
+				int comm = rs.getInt(++index);
+				list.add(new BonusDto(name, job, sal, comm));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+		return list;
 	}
 }

@@ -37,7 +37,7 @@ public class FileClient {
 			osw = new OutputStreamWriter(out);
 			bw = new BufferedWriter(osw);
 
-			bw.write("apache-tomcat-9.0.22.zip");
+			bw.write("test.mp4");
 			bw.newLine();
 			bw.flush();
 
@@ -45,13 +45,14 @@ public class FileClient {
 			in = socket.getInputStream();
 			File f = new File("C:\\dev\\test\\network");
 			f.mkdirs();
-			f = new File(f, "apache-tomcat-9.0.22.zip");
+			f = new File(f, "test.mp4");
 			fos = new FileOutputStream(f);
 			byte[] readBytes = new byte[1024 * 8];
 			int readByteCount = 0;
 			while ((readByteCount = in.read(readBytes)) != -1) {
 				fos.write(readBytes, 0, readByteCount);
 			}
+			System.out.println("다운 완료했습니다.");
 		} catch (UnknownHostException e) {
 			System.out.println("서버 주소가 잘못되었습니다.");
 		} catch (IOException e) {
