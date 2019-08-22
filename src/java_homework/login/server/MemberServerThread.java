@@ -94,14 +94,15 @@ public class MemberServerThread implements Runnable {
 				}
 				
 				else if(split[0].equals("5")) {
-					System.out.println("사용자가 종료하였습니다.");
-					isTrue = true;
 					list.remove(this);
+					isTrue = true;
+					System.out.print("사용자가 접속을 해제하였습니다. [현재 사용자수 : " + list.size() + "]\n");
 				}
 			}
 
-		} catch (IOException e) {
+		} catch (IOException e) {			
 			list.remove(this);
+			System.out.print("사용자가 접속을 해제하였습니다. [현재 사용자수 : " + list.size() + "]\n");
 			//e.printStackTrace();
 		} finally {
 			try {

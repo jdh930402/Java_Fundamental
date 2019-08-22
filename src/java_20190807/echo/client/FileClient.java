@@ -37,7 +37,7 @@ public class FileClient {
 			osw = new OutputStreamWriter(out);
 			bw = new BufferedWriter(osw);
 
-			bw.write("test.mp4");
+			bw.write("javascript.pdf");
 			bw.newLine();
 			bw.flush();
 
@@ -45,7 +45,7 @@ public class FileClient {
 			in = socket.getInputStream();
 			File f = new File("C:\\dev\\test\\network");
 			f.mkdirs();
-			f = new File(f, "test.mp4");
+			f = new File(f, "javascript.pdf");
 			fos = new FileOutputStream(f);
 			byte[] readBytes = new byte[1024 * 8];
 			int readByteCount = 0;
