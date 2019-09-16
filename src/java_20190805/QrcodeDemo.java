@@ -17,7 +17,7 @@ public class QrcodeDemo {
 		QRCodeWriter writer = new QRCodeWriter();
 		try {
 			BitMatrix qrCode = writer.encode("http://www.naver.com", BarcodeFormat.QR_CODE, 300, 300);
-			BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(qrCode);
+			BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(qrCode);			
 			File f = new File("C:\\dev\\test\\qrcode.png");
 			boolean isSuccess = ImageIO.write(qrImage, "png", f);
 			System.out.println(isSuccess);
